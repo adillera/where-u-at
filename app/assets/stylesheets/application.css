@@ -13,3 +13,20 @@
  *= require_tree .
  *= require_self
  */
+
+.top, .bottom {
+  background-color: #001533;
+  min-height: 20vh;
+}
+
+.top {
+  border-bottom: 3px solid #CCCCCC;
+}
+
+.bottom {
+  border-top: 3px solid #CCCCCC;
+}
+
+.main {
+  min-height: 60vh;
+}
