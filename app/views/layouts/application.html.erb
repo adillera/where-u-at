@@ -3,7 +3,6 @@
   <head>
     <title>WhereUAt</title>
     <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
     <%= csrf_meta_tags %>
   </head>
 
@@ -15,5 +14,8 @@
     </div>
 
     <div class="bottom"></div>
+
+    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js" %>
+    <%= javascript_include_tag 'application' %>
   </body>
 </html>
