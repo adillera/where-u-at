@@ -4,8 +4,30 @@
 $ ->
   $('.channel-holder').html("Current channel:" + " " + sessionStorage.sNrChannel)
 
-  initializeMap = () ->
-    latLng = new google.maps.LatLng(44.5403, -78.5463)
+  latLng = null
+  map = null
+
+  initializeChannel = () ->
+    geoLoc = navigator.geolocation
+
+    if geoLoc
+      geoLoc.getCurrentPosition(getPosition)
+    else
+      alert 'Geolocation is not supported by this browser.'
+
+    return
+
+  getPosition = (position) ->
+    latLng = new google.maps.LatLng(
+      position.coords.latitude
+    , position.coords.longitude
+    )
+
+    renderMap(latLng)
+
+    return
+
+  renderMap = (latLng) ->
     mapCanvas = $('.map-container')[0]
     mapOptions =
       center: latLng
@@ -14,11 +36,16 @@ $ ->
 
     map = new google.maps.Map(mapCanvas, mapOptions)
 
-    marker = new google.maps.Marker
-      position: latLng
-      map: map
-      title: 'wee'
+    renderMarker(latLng, map)
 
     return
 
-  initializeMap()
+  renderMarker = (latLng, map) ->
+    new google.maps.Marker
+      position: latLng
+      map: map
+
+    return
+
+
+  initializeChannel()
