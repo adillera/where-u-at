@@ -6,16 +6,20 @@ class MapsController < ApplicationController
   def feed
     begin
       response.headers['Content-Type'] = 'text/event-stream'
+
+      redis = Redis.new
       sse = SSE.new(response.stream)
 
-      $redis.subscribe('testChannel', 'heartbeat') do |on|
+      redis.subscribe('testChannel') do |on|
         on.message do |channel, message|
           sse.write({ data: message, event: 'message' })
         end
       end
-    rescue IOError
+    rescue IOError, ActionController::Live::ClientDisconnected
       logger.info 'Stream closed'
     ensure
+      redis.quit
+
       sse.close
     end
 

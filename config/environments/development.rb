@@ -38,4 +38,8 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Allow concurrency for development environement
+  config.preload_frameworks = true
+  config.allow_concurrency = true
 end
