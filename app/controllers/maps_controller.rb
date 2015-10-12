@@ -6,7 +6,8 @@ class MapsController < ApplicationController
   def publish
     data = {
       lat_lng: params[:latLng],
-      handle: params[:handle]
+      handle: params[:handle],
+      time: Time.now.to_i
     }
 
     redis = Redis.new

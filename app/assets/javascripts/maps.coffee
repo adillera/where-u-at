@@ -48,8 +48,6 @@ $ ->
     return
 
   renderMarkers = () ->
-    console.log 'rendering new set of markers...'
-
     # Clear markers
     for m in markers
       m.setMap(null)
@@ -60,8 +58,8 @@ $ ->
     # Render and push new positions to markers array
     for k, v of positions
       handle = k
-      lat = v.lat
-      lng = v.lng
+      lat = v.latLng.lat
+      lng = v.latLng.lng
 
       infoWindow = new google.maps.InfoWindow(
         content: "<div><strong>" + handle + "</strong></div>" +
@@ -71,12 +69,13 @@ $ ->
       marker = new google.maps.Marker
         position: new google.maps.LatLng(lat, lng)
         map: map
+        label: handle.charAt(0).toUpperCase()
 
       marker.addListener 'click', () ->
         infoWindow.open(map, marker)
 
       # Start info window opened
-      infoWindow.open(map, marker)
+      #infoWindow.open(map, marker)
 
       markers.push marker
 
@@ -89,8 +88,13 @@ $ ->
       resp = JSON.parse(e.data)
       latLng = resp.lat_lng
       handle = resp.handle
+      time = resp.time
+      tDiff = (Math.floor(Date.now()) / 1000) - parseInt(time)
 
-      positions[handle] = latLng
+      if positions[handle] && tDiff >= 300
+        delete positions[handle]
+      else
+        positions[handle] = { latLng: latLng, time: time }
 
       renderMarkers()
     , false)
