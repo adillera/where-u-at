@@ -7,6 +7,8 @@ $ ->
   geoLoc = null
   latLng = null
   map = null
+  positions = {}
+  markers = []
   eventSource = null
 
   initializeChannel = () ->
@@ -45,17 +47,38 @@ $ ->
 
     return
 
-  renderMarker = (latLng, map, handle) ->
-    infoWindow = new google.maps.InfoWindow(
-      content: handle
-    )
+  renderMarkers = () ->
+    console.log 'rendering new set of markers...'
 
-    marker = new google.maps.Marker
-      position: new google.maps.LatLng(latLng.lat, latLng.lng)
-      map: map
+    # Clear markers
+    for m in markers
+      m.setMap(null)
 
-    marker.addListener 'click', () ->
+    # Set markers to blank array (clean array)
+    markers = []
+
+    # Render and push new positions to markers array
+    for k, v of positions
+      handle = k
+      lat = v.lat
+      lng = v.lng
+
+      infoWindow = new google.maps.InfoWindow(
+        content: "<div><strong>" + handle + "</strong></div>" +
+          "<div><strong>Location: </strong> (" + lat + ", " + lng + ")</div>"
+      )
+
+      marker = new google.maps.Marker
+        position: new google.maps.LatLng(lat, lng)
+        map: map
+
+      marker.addListener 'click', () ->
+        infoWindow.open(map, marker)
+
+      # Start info window opened
       infoWindow.open(map, marker)
+
+      markers.push marker
 
     return
 
@@ -67,7 +90,9 @@ $ ->
       latLng = resp.lat_lng
       handle = resp.handle
 
-      renderMarker(latLng, map, handle)
+      positions[handle] = latLng
+
+      renderMarkers()
     , false)
 
     return
