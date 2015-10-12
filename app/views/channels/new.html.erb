@@ -6,3 +6,7 @@
 
   <a href="#" class="btn btn-primary" id="join-channel">Join Channel</a>
 </div>
+
+<% content_for :additional_scripts do %>
+  <%= javascript_include_tag 'channels' %>
+<% end %>

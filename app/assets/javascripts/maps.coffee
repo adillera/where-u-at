@@ -6,6 +6,7 @@ $ ->
 
   latLng = null
   map = null
+  eventSource = null
 
   initializeChannel = () ->
     geoLoc = navigator.geolocation
@@ -44,8 +45,21 @@ $ ->
     new google.maps.Marker
       position: latLng
       map: map
+      label: 'A'
+
+    startEventSource()
 
     return
 
+  startEventSource = () ->
+    eventSource = new EventSource('/maps/feed')
+
+    eventSource.addEventListener('message', (e) ->
+      console.log(e.data)
+      console.log(e)
+    , false)
+
 
   initializeChannel()
+
+

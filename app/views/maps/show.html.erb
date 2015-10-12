@@ -1,3 +1,7 @@
 <div class="channel-holder"></div>
 
 <div class="map-container"></div>
+
+<% content_for :additional_scripts do %>
+  <%= javascript_include_tag 'maps' %>
+<% end %>

@@ -12,6 +12,7 @@ $ ->
       alert 'We need a channel to continue'
     else
       sessionStorage.sNrChannel = value
+
       window.location = '/maps'
 
     return
