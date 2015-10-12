@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get 'maps' => 'maps#show'
   get 'maps/feed' => 'maps#feed'
+  post 'maps/publish' => 'maps#publish'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
